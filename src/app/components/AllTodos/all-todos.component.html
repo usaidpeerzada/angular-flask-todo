@@ -1,0 +1,64 @@
+<div class="todo-container">
+  <div class="todo-header">
+    <h1 class="app-title">✨ Smart Todo</h1>
+    <p class="subtitle">Powered by AI</p>
+  </div>
+
+  <div class="add-todo-section">
+    <div class="input-wrapper">
+      <input type="text" class="add-input" placeholder="What would you like to accomplish?"
+        (change)="handleInputChange($event)" [value]="this.newTodo">
+      <button class="add-btn pulse" (click)="handleAdd()">
+        <span>Add Task</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="todos-wrapper">
+    <h3 class="section-title">Your tasks for today</h3>
+
+    <div class="todos-list">
+      <div class="todo-item" *ngFor="let todo of todos()" [class.completed]="todo.done">
+        <div class="todo-main-content">
+          <div class="todo-checkbox-wrapper">
+            <input type="checkbox" [id]="'todo-' + todo.id" class="todo-checkbox" [checked]="todo.done"
+              (change)="todoDone($event, todo.id)">
+            <label [for]="'todo-' + todo.id" class="checkbox-label"></label>
+          </div>
+
+          <ng-container *ngIf="!todo.isEditing; else editMode">
+            <p class="todo-content" [class.todo-completed]="todo.done">
+              {{ todo.content }}
+            </p>
+          </ng-container>
+
+          <ng-template #editMode>
+            <div class="edit-wrapper">
+              <input type="text" [(ngModel)]="todo.editContent" class="edit-input" placeholder="Update your task">
+            </div>
+          </ng-template>
+        </div>
+
+        <div class="todo-actions" [class.edit-mode]="todo.isEditing">
+          <ng-container *ngIf="!todo.isEditing; else editActions">
+            <button class="action-btn edit" [hidden]="todo.done" (click)="handleEdit(todo.id)">
+              Edit
+            </button>
+            <button class="action-btn delete" (click)="deleteTodo(todo.id)">
+              Delete
+            </button>
+          </ng-container>
+
+          <ng-template #editActions>
+            <button class="action-btn update" (click)="saveEdit(todo.id)">
+              Save
+            </button>
+            <button class="action-btn cancel" (click)="cancelEdit(todo.id)">
+              Cancel
+            </button>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
