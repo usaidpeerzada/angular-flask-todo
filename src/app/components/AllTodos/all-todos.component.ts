@@ -102,9 +102,7 @@ export class AllTodosComponent implements OnInit {
       .post<Todo>('http://127.0.0.1:5000/create-task', body)
       .subscribe((response) => {
         const currentTodos = this.todos();
-        console.log('cirr, c', currentTodos);
         this.todos.set([...currentTodos, response]);
-        console.log('afyer', this.todos());
       });
   }
 
